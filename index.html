@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+    <link rel="icon" href="./img/Deimos.png">
+  <title>Deimos Tradutor</title>
+  <link rel="stylesheet" href="tradutor.css">
+</head>
+<body>
+  <header>Deimos Tradutor</header>
+  <main class="container">
+    <textarea id="texto" rows="5" placeholder="Digite o texto para traduzir..."></textarea>
+    <div class="options">
+      <select id="idioma">
+        <option value="inglês">Inglês</option>
+        <option value="espanhol">Espanhol</option>
+        <option value="francês">Francês</option>
+        <option value="alemão">Alemão</option>
+        <option value="italiano">Italiano</option>
+      </select>
+      <button onclick="traduzir()">Traduzir</button>
+    </div>
+    <div id="resultado-container">
+      <p id="resultado">Sua tradução aparecerá aqui.</p>
+    </div>
+  </main>
+  <footer id="status">Pronto para traduzir.</footer>
+  <script src="tradutor.js"></script>
+</body>
+</html>
