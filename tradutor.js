@@ -60,7 +60,20 @@ async function traduzir() {
   document.getElementById("status").innerText = "Traduzindo...";
   const resultado = await traduzirTexto(texto, origem, destino);
   document.getElementById("resultado").innerText = resultado;
+  document.getElementById("btnAudio").style.display = "inline-block";
   document.getElementById("status").innerText = "Pronto para traduzir.";
+}
+
+function falar() {
+  const texto = document.getElementById("resultado").innerText;
+  const idiomaDestino = document.getElementById("destino").value;
+
+  if (!texto.trim()) return;
+
+  const utterance = new SpeechSynthesisUtterance(texto);
+  utterance.lang = idiomaDestino;
+
+  speechSynthesis.speak(utterance);
 }
 
 window.onload = preencherSelects;
