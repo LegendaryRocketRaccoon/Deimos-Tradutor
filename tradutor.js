@@ -1,39 +1,66 @@
+// Lista de idiomas suportados
+const idiomas = {
+  "Português": "pt",
+  "Inglês": "en",
+  "Espanhol": "es",
+  "Francês": "fr",
+  "Alemão": "de",
+  "Italiano": "it",
+  "Russo": "ru",
+  "Chinês (Simplificado)": "zh-CN",
+  "Japonês": "ja",
+  "Coreano": "ko",
+  "Árabe": "ar",
+  "Holandês": "nl",
+  "Grego": "el",
+  "Hindi": "hi",
+};
 
-async function traduzirTexto(texto, idiomaAlvo) {
-  const langCode = {
-    inglês: "en",
-    espanhol: "es",
-    francês: "fr",
-    alemão: "de",
-    italiano: "it",
-    português: "pt",
-  }[idiomaAlvo.toLowerCase()];
+function preencherSelects() {
+  const origem = document.getElementById("origem");
+  const destino = document.getElementById("destino");
 
-  if (!langCode) return `Desculpe, não conheço o idioma "${idiomaAlvo}".`;
+  for (const nome in idiomas) {
+    const opt1 = document.createElement("option");
+    opt1.value = idiomas[nome];
+    opt1.textContent = nome;
 
-  const origem = "pt";
+    const opt2 = document.createElement("option");
+    opt2.value = idiomas[nome];
+    opt2.textContent = nome;
+
+    origem.appendChild(opt1);
+    destino.appendChild(opt2);
+  }
+
+  origem.value = "pt";
+  destino.value = "en";
+}
+
+async function traduzirTexto(texto, origem, destino) {
+  if (!texto.trim()) return "Digite algo para traduzir.";
 
   try {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${origem}|${langCode}`;
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=${origem}|${destino}`;
     const resposta = await fetch(url);
     const dados = await resposta.json();
 
-    const traducao = dados.responseData.translatedText;
-
-    if (traducao && traducao.toLowerCase() !== texto.toLowerCase()) {
-      return `A tradução de "${texto}" para ${idiomaAlvo} é: ${traducao}`;
-    } else {
-      return `Não consegui traduzir "${texto}" para ${idiomaAlvo}.`;
-    }
+    return dados.responseData.translatedText || "Não consegui traduzir.";
   } catch (e) {
     console.error("Erro:", e);
-    return "Ocorreu um erro ao tentar traduzir.";
+    return "Erro ao tentar traduzir.";
   }
 }
 
 async function traduzir() {
   const texto = document.getElementById("texto").value;
-  const idioma = document.getElementById("idioma").value;
-  const resultado = await traduzirTexto(texto, idioma);
+  const origem = document.getElementById("origem").value;
+  const destino = document.getElementById("destino").value;
+
+  document.getElementById("status").innerText = "Traduzindo...";
+  const resultado = await traduzirTexto(texto, origem, destino);
   document.getElementById("resultado").innerText = resultado;
+  document.getElementById("status").innerText = "Pronto para traduzir.";
 }
+
+window.onload = preencherSelects;
