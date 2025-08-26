@@ -1,4 +1,3 @@
-// Lista de idiomas suportados
 const idiomas = {
   "Português": "pt",
   "Inglês": "en",
@@ -59,9 +58,16 @@ async function traduzir() {
 
   document.getElementById("status").innerText = "Traduzindo...";
   const resultado = await traduzirTexto(texto, origem, destino);
+
   document.getElementById("resultado").innerText = resultado;
-  document.getElementById("btnAudio").style.display = "inline-block";
   document.getElementById("status").innerText = "Pronto para traduzir.";
+
+  const btnAudio = document.getElementById("btnAudio");
+  if (resultado && resultado.trim() !== "" && resultado !== "Não consegui traduzir.") {
+    btnAudio.style.display = "inline-block";
+  } else {
+    btnAudio.style.display = "none";
+  }
 }
 
 function falar() {
@@ -72,7 +78,6 @@ function falar() {
 
   const utterance = new SpeechSynthesisUtterance(texto);
   utterance.lang = idiomaDestino;
-
   speechSynthesis.speak(utterance);
 }
 
